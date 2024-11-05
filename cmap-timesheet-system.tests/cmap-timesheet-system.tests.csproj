@@ -26,9 +26,4 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Fixtures\" />
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
 </Project>

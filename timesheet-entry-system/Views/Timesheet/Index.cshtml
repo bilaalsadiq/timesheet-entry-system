@@ -1,5 +1,42 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model TimesheetEntry
 @{
+    ViewData["Title"] = "Timesheet Entry";
 }
+
+<div class="text-left">
+    <h1 class="display-4">Add Timesheet Entry</h1>
+
+    <form asp-controller="Timesheet" asp-action="AddEntry" method="post">
+        <div class="form-group">
+            <label asp-for="UserName" class="control-label"></label>
+            <input asp-for="UserName" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Date"></label>
+            <input asp-for="Date" />
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ProjectName"></label>
+            <input asp-for="ProjectName" />
+            <span asp-validation-for="ProjectName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="TaskDescription"></label>
+            <input asp-for="TaskDescription" />
+            <span asp-validation-for="TaskDescription" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HoursWorked"></label>
+            <input asp-for="HoursWorked" />
+            <span asp-validation-for="HoursWorked" class="text-danger"></span>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
