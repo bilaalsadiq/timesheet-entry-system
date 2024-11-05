@@ -38,5 +38,28 @@ namespace cmap_timesheet_system.tests
             //assert
             Assert.Single(_context.TimesheetEntries);
         }
+
+        [Theory]
+        [InlineData(null, "2014-10-22", "Project Alpha", "Developed new feature X", 4, "Username is required")]
+        [InlineData("John Smith", null, "Project Alpha", "Developed new feature X", 4, "Date is required")]
+        [InlineData("John Smith", "2014-10-22", null, "Developed new feature X", 4, "Project Name is required")]
+        [InlineData("John Smith", "2014-10-22", "Project Alpha", null, 4, "Task Description is required")]
+        [InlineData("John Smith", "2014-10-22", "Project Alpha", "Developed new feature X", 0, "Hours Worked must be greater than 0")]
+        public void AddSingleEntry_ShouldThrowException_WhenFieldsAreInvalid(string userName, string date, string project, string description, int hoursWorked, string expectedMessage)
+        {
+            // Arrange
+            var entry = new TimesheetEntry
+            {
+                UserName = userName,
+                Date = date != null ? DateTime.Parse(date) : default,
+                ProjectName = project,
+                TaskDescription = description,
+                HoursWorked = hoursWorked
+            };
+
+            // Act & Assert
+            var exception = Assert.Throws<ArgumentException>(() => _service.AddEntry(entry));
+            Assert.Equal(expectedMessage, exception.Message);
+        }
     }
 }
