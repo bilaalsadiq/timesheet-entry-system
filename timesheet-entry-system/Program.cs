@@ -1,7 +1,17 @@
+using Microsoft.EntityFrameworkCore;
+using timesheet_entry_system.Data;
+using timesheet_entry_system.Interfaces;
+using timesheet_entry_system.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ITimesheetService, TimesheetService>();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseInMemoryDatabase("TimesheetDB"));
 
 var app = builder.Build();
 

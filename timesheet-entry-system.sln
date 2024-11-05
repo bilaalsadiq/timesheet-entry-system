@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "timesheet-entry-system", "timesheet-entry-system\timesheet-entry-system.csproj", "{BA1D6FF6-115C-4BF6-BE0B-06B4393CFFEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cmap-timesheet-system.tests", "cmap-timesheet-system.tests\cmap-timesheet-system.tests.csproj", "{DA1B8F6F-1AA6-4F22-9891-841CE5330DEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BA1D6FF6-115C-4BF6-BE0B-06B4393CFFEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA1D6FF6-115C-4BF6-BE0B-06B4393CFFEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA1D6FF6-115C-4BF6-BE0B-06B4393CFFEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA1B8F6F-1AA6-4F22-9891-841CE5330DEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA1B8F6F-1AA6-4F22-9891-841CE5330DEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA1B8F6F-1AA6-4F22-9891-841CE5330DEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA1B8F6F-1AA6-4F22-9891-841CE5330DEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
