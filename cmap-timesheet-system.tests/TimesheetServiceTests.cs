@@ -20,7 +20,7 @@ namespace cmap_timesheet_system.tests
 
         [Theory]
         [InlineData("John Smith", "2014-10-22", "Project Alpha", "Developed new feature X", 4)]
-        public void AddSingleEntry_ShouldAddEntryToDB(string userName, string date, string project, string description, int hoursWorked)
+        public void AddSingleEntry_ShouldAddEntryToContext(string userName, string date, string project, string description, int hoursWorked)
         {
             //arrange
             var entry = new TimesheetEntry()
@@ -61,5 +61,57 @@ namespace cmap_timesheet_system.tests
             var exception = Assert.Throws<ArgumentException>(() => _service.AddEntry(entry));
             Assert.Equal(expectedMessage, exception.Message);
         }
+
+
+        [Fact]
+        public void AddMultipleEntries_ToDB_ShouldContainBothEntries()
+        {
+            // Arrange
+
+            var entries = new List<TimesheetEntry>
+            {
+                new TimesheetEntry { UserName = "John Smith", Date = new DateTime(2014, 10, 22), ProjectName = "Project Alpha", TaskDescription = "Developed new feature X", HoursWorked = 4 },
+                new TimesheetEntry { UserName = "Jane Doe", Date = new DateTime(2014, 10, 22), ProjectName = "Project Gamma", TaskDescription = "Conducted User Testing", HoursWorked = 6 }
+            };
+
+            var entry1 = new TimesheetEntry
+            {
+                UserName = "John Smith",
+                Date = new DateTime(2014, 10, 22),
+                ProjectName = "Project Alpha",
+                TaskDescription = "Developed new feature X",
+                HoursWorked = 4
+            };
+
+            var entry2 = new TimesheetEntry
+            {
+                UserName = "Jane Doe",
+                Date = new DateTime(2014, 10, 22),
+                ProjectName = "Project Gamma",
+                TaskDescription = "Conducted User Testing",
+                HoursWorked = 6
+            };
+
+            // Act
+            _service.AddEntry(entry1);
+            _service.AddEntry(entry2);
+
+            // Assert
+            var retrievedEntry1 = _context.TimesheetEntries.FirstOrDefault(e => e.UserName == "John Smith");
+            Assert.NotNull(retrievedEntry1);
+            Assert.Equal(new DateTime(2014, 10, 22), retrievedEntry1.Date);
+            Assert.Equal("Project Alpha", retrievedEntry1.ProjectName);
+            Assert.Equal("Developed new feature X", retrievedEntry1.TaskDescription);
+            Assert.Equal(4, retrievedEntry1.HoursWorked);
+
+            var retrievedEntry2 = _context.TimesheetEntries.FirstOrDefault(e => e.UserName == "Jane Doe");
+            Assert.NotNull(retrievedEntry2);
+            Assert.Equal(new DateTime(2014, 10, 22), retrievedEntry2.Date);
+            Assert.Equal("Project Gamma", retrievedEntry2.ProjectName);
+            Assert.Equal("Conducted User Testing", retrievedEntry2.TaskDescription);
+            Assert.Equal(6, retrievedEntry2.HoursWorked);
+        }
+
+
     }
 }
