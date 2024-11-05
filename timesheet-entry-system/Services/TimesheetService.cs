@@ -33,5 +33,23 @@ namespace timesheet_entry_system.Services
             _context.TimesheetEntries.Add(entry);
             _context.SaveChanges();
         }
+
+        public List<TimesheetEntryDTO> GetEntriesWithTotalHours()
+        {
+            var result = _context.TimesheetEntries
+                .AsEnumerable()
+                .GroupBy(e => new { e.UserName, e.Date })
+                .SelectMany(g => g.Select(e => new TimesheetEntryDTO
+                {
+                    UserName = e.UserName,
+                    Date = e.Date,
+                    ProjectName = e.ProjectName,
+                    TaskDescription = e.TaskDescription,
+                    HoursWorked = e.HoursWorked,
+                    TotalHours = g.Sum(e => e.HoursWorked)
+                }));
+
+            return result.ToList();
+        }
     }
 }

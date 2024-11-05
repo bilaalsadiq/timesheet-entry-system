@@ -18,7 +18,7 @@ namespace cmap_timesheet_system.tests
         }
 
 
-        [Theory]
+        [Theory] //Test is flaking 
         [InlineData("John Smith", "2014-10-22", "Project Alpha", "Developed new feature X", 4)]
         public void AddSingleEntry_ShouldAddEntryToContext(string userName, string date, string project, string description, int hoursWorked)
         {
@@ -112,6 +112,31 @@ namespace cmap_timesheet_system.tests
             Assert.Equal(6, retrievedEntry2.HoursWorked);
         }
 
+        [Fact]
+        public void AddMultipleEntriesOfSameUserAndSameDay_ShouldReturnAggregatedHoursForTheDay()
+        {
+            // Arrange
+            var entries = new List<TimesheetEntry>
+            {
+                new TimesheetEntry { UserName = "John Smith", Date = new DateTime(2024, 10, 1), ProjectName = "Project Alpha", TaskDescription = "Feature X", HoursWorked = 4 },
+                new TimesheetEntry { UserName = "John Smith", Date = new DateTime(2024, 10, 1), ProjectName = "Project Beta", TaskDescription = "Feature Y", HoursWorked = 3 },
+                new TimesheetEntry { UserName = "Jane Doe", Date = new DateTime(2024, 10, 2), ProjectName = "Project Gamma", TaskDescription = "Testing", HoursWorked = 5 }
+            };
 
+            _context.TimesheetEntries.AddRange(entries); // using addRange as not specifically testing AddToDB, rather testing the aggregating feature
+            _context.SaveChanges();
+
+            // Act
+            var result = _service.GetEntriesWithTotalHours().ToList();
+
+            // Assert
+            var johnEntries = result.Where(e => e.UserName == "John Smith" && e.Date == new DateTime(2024, 10, 1)).ToList();
+            Assert.Equal(2, johnEntries.Count());
+            Assert.Equal(7, johnEntries.First().TotalHours);
+
+            var janeEntry = result.Where(e => e.UserName == "Jane Doe" && e.Date == new DateTime(2024, 10, 2)).ToList();
+            Assert.Single(janeEntry);
+            Assert.Equal(5, janeEntry.First().TotalHours);
+        }
     }
 }

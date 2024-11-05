@@ -5,5 +5,7 @@ namespace timesheet_entry_system.Interfaces
     public interface ITimesheetService
     {
         void AddEntry(TimesheetEntry entry);
+        List<TimesheetEntryDTO> GetEntriesWithTotalHours();
+
     }
 }
