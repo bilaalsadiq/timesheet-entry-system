@@ -6,6 +6,13 @@
 <div class="text-left">
     <h1 class="display-4">Add Timesheet Entry</h1>
 
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
     <form asp-controller="Timesheet" asp-action="AddEntry" method="post">
         <div class="form-group">
             <label asp-for="UserName" class="control-label"></label>
@@ -39,4 +46,12 @@
 
         <button type="submit">Submit</button>
     </form>
+
+    <hr>
+
+    <form method="get" action="@Url.Action("DownloadCsv", "Timesheet")">
+        <button type="submit">Download CSV</button>
+    </form>
+
+
 </div>
