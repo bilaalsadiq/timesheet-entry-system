@@ -10,11 +10,13 @@ namespace cmap_timesheet_system.tests
     {
         private readonly ITimesheetService _service;
         private readonly ApplicationDbContext _context;
+        private readonly TestFixture _fixture;
 
         public TimesheetServiceTests(TestFixture fixture)
         {
             _service = fixture.ServiceProvider.GetService<ITimesheetService>();
             _context = fixture.ServiceProvider.GetService<ApplicationDbContext>();
+            _fixture = fixture;
         }
 
 
@@ -23,6 +25,9 @@ namespace cmap_timesheet_system.tests
         public void AddSingleEntry_ShouldAddEntryToContext(string userName, string date, string project, string description, int hoursWorked)
         {
             //arrange
+
+            _fixture.Setup();
+
             var entry = new TimesheetEntry()
             {
                 UserName = userName,
@@ -48,6 +53,8 @@ namespace cmap_timesheet_system.tests
         public void AddSingleEntry_ShouldThrowException_WhenFieldsAreInvalid(string userName, string date, string project, string description, int hoursWorked, string expectedMessage)
         {
             // Arrange
+            _fixture.Setup();
+
             var entry = new TimesheetEntry
             {
                 UserName = userName,
@@ -67,6 +74,7 @@ namespace cmap_timesheet_system.tests
         public void AddMultipleEntries_ToDB_ShouldContainBothEntries()
         {
             // Arrange
+            _fixture.Setup();
 
             var entries = new List<TimesheetEntry>
             {
@@ -116,6 +124,8 @@ namespace cmap_timesheet_system.tests
         public void AddMultipleEntriesOfSameUserAndSameDay_ShouldReturnAggregatedHoursForTheDay()
         {
             // Arrange
+            _fixture.Setup();
+
             var entries = new List<TimesheetEntry>
             {
                 new TimesheetEntry { UserName = "John Smith", Date = new DateTime(2024, 10, 1), ProjectName = "Project Alpha", TaskDescription = "Feature X", HoursWorked = 4 },

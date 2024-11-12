@@ -22,6 +22,13 @@ namespace cmap_timesheet_system.tests.Fixtures
             ServiceProvider = serviceCollection.BuildServiceProvider();
         }
 
+        public void Setup()
+        {
+            var context = ServiceProvider.GetService<ApplicationDbContext>();
+            context.TimesheetEntries.RemoveRange(context.TimesheetEntries);
+            context.SaveChanges();
+        }
+
         public void Dispose()
         {
             ServiceProvider?.Dispose();
